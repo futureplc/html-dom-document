@@ -8,7 +8,9 @@ class IgnoreHTMLTag extends AbstractMiddleware
 {
     protected array $replacements = [];
 
-    public function __construct(protected HTMLDocument $dom, protected string $tag) {}
+    public function __construct(protected HTMLDocument $dom, protected string $tag)
+    {
+    }
 
     /** @link https://regex101.com/r/Sg2P90/1 */
     public function beforeLoadHTML(string $source): string

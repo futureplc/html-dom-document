@@ -2,8 +2,8 @@
 
 namespace Future\HTMLDocument;
 
-use DOMNode;
 use DOMDocument;
+use DOMNode;
 
 class Utility
 {

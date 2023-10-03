@@ -10,17 +10,17 @@ trait HasXPathQuerySelectors
 {
     abstract protected function getDocument(): HTMLDocument;
 
-	public function query($xpathSelector): HTMLNodeList
-	{
+    public function query($xpathSelector): HTMLNodeList
+    {
         $xpath = new HTMLXPath($this->getDocument());
 
-		return $xpath->query($xpathSelector, $this->getDocument());
-	}
+        return $xpath->query($xpathSelector, $this->getDocument());
+    }
 
-	public function evaluate($xpathSelector): HTMLNodeList
-	{
+    public function evaluate($xpathSelector): HTMLNodeList
+    {
         $xpath = new HTMLXPath($this->getDocument());
 
-		return $xpath->query($xpathSelector, $this->getDocument());
-	}
+        return $xpath->query($xpathSelector, $this->getDocument());
+    }
 }

@@ -22,7 +22,7 @@ class InjectDefaultDoctype extends AbstractMiddleware
 
     public function beforeLoadHTML(string $source): string
     {
-        if (!$this->hasDoctype($source)) {
+        if (! $this->hasDoctype($source)) {
             $this->hadDoctypeInjected = true;
 
             return $this->defaultDocType . $source;

@@ -2,10 +2,10 @@
 
 namespace Future\HTMLDocument\Concerns;
 
-use DOMXPath;
 use DOMNodeList;
-use Future\HTMLDocument\HTMLElement;
+use DOMXPath;
 use Future\HTMLDocument\HTMLDocument;
+use Future\HTMLDocument\HTMLElement;
 use Future\HTMLDocument\HTMLNodeList;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 

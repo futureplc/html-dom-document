@@ -2,8 +2,8 @@
 
 namespace Future\HTMLDocument\Tests\HTMLDocument\Middleware;
 
-use PHPUnit\Framework\TestCase;
 use Future\HTMLDocument\HTMLDocument;
+use PHPUnit\Framework\TestCase;
 
 class HasXPathQuerySelectorsTest extends TestCase
 {

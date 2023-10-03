@@ -4,8 +4,6 @@ namespace Future\HTMLDocument;
 
 use DOMNode;
 use DOMXPath;
-use Future\HTMLDocument\HTMLDocument;
-use Future\HTMLDocument\HTMLNodeList;
 
 /**
  * @property-read HTMLDocument $document

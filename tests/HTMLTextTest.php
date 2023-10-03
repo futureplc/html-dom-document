@@ -2,10 +2,9 @@
 
 namespace Future\HTMLDocument\Tests\HTMLDocument;
 
-use Future\HTMLDocument\HTMLDocument;
-use PHPUnit\Framework\TestCase;
 use Future\HTMLDocument\HTMLElement;
 use Future\HTMLDocument\HTMLText;
+use PHPUnit\Framework\TestCase;
 
 class HTMLTextTest extends TestCase
 {

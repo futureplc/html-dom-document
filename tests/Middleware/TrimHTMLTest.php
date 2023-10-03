@@ -2,9 +2,9 @@
 
 namespace Future\HTMLDocument\Tests\HTMLDocument\Middleware;
 
-use PHPUnit\Framework\TestCase;
 use Future\HTMLDocument\HTMLDocument;
 use Future\HTMLDocument\Middleware\TrimHTML;
+use PHPUnit\Framework\TestCase;
 
 class TrimHTMLTest extends TestCase
 {

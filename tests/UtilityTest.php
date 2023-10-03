@@ -2,13 +2,11 @@
 
 namespace Future\HTMLDocument\Tests\HTMLDocument;
 
-use DOMNode;
 use DOMDocument;
 use DOMElement;
-use PHPUnit\Framework\TestCase;
+use DOMNode;
 use Future\HTMLDocument\Utility;
-use Future\HTMLDocument\HTMLElement;
-use Future\HTMLDocument\HTMLDocument;
+use PHPUnit\Framework\TestCase;
 
 class UtilityTest extends TestCase
 {

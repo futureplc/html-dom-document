@@ -3,10 +3,9 @@
 namespace Future\HTMLDocument;
 
 use DOMAttr;
-use DOMNode;
 use DOMElement;
+use DOMNode;
 use Future\HTMLDocument\Concerns\CanManipulateDocument;
-use Future\HTMLDocument\Utility;
 use Future\HTMLDocument\Concerns\HasCssQuerySelectors;
 use Future\HTMLDocument\Concerns\HasXPathQuerySelectors;
 use Future\HTMLDocument\Exceptions\HTMLException;
@@ -39,7 +38,7 @@ class HTMLElement extends DOMElement
     /** @return string[] */
     public function getClassList(): array
     {
-        if (!$this->hasAttribute('class')) {
+        if (! $this->hasAttribute('class')) {
             return [];
         }
 
@@ -83,7 +82,7 @@ class HTMLElement extends DOMElement
     {
         $classes = $this->getClassList();
 
-        if (!in_array($class, $classes, true)) {
+        if (! in_array($class, $classes, true)) {
             return;
         }
 
@@ -116,7 +115,7 @@ class HTMLElement extends DOMElement
     {
         $attributes = Utility::attributes($this->getAttributes());
 
-        if (!empty($attributes)) {
+        if (! empty($attributes)) {
             $attributes = ' ' . $attributes;
         }
 

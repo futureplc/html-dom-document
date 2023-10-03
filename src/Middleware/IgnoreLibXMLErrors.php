@@ -11,6 +11,7 @@ class IgnoreLibXMLErrors extends AbstractMiddleware
     public function beforeLoadHTML(string $source): string
     {
         libxml_use_internal_errors(false);
+
         return $source;
     }
 

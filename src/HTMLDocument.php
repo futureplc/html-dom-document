@@ -3,18 +3,15 @@
 namespace Future\HTMLDocument;
 
 use DOMAttr;
-use DOMNode;
-use DOMElement;
 use DOMDocument;
-use DOMException;
+use DOMElement;
+use DOMNode;
 use DOMText;
 use Future\HTMLDocument\Concerns\CanManipulateDocument;
-use Future\HTMLDocument\Middleware;
-use Future\HTMLDocument\HTMLNodeList;
-use Future\HTMLDocument\Exceptions\HTMLException;
 use Future\HTMLDocument\Concerns\HasCssQuerySelectors;
-use Future\HTMLDocument\Middleware\AbstractMiddleware;
 use Future\HTMLDocument\Concerns\HasXPathQuerySelectors;
+use Future\HTMLDocument\Exceptions\HTMLException;
+use Future\HTMLDocument\Middleware\AbstractMiddleware;
 
 /**
  * @property-read ?HTMLElement $documentElement
@@ -65,7 +62,7 @@ class HTMLDocument extends DOMDocument
     {
         $dom = new HTMLDocument();
 
-        if (!$middleware) {
+        if (! $middleware) {
             $dom = $dom->withoutMiddleware();
         }
 
@@ -96,7 +93,7 @@ class HTMLDocument extends DOMDocument
         return $dom;
     }
 
-    public static function loadFromFile(string $filePath) : HTMLDocument
+    public static function loadFromFile(string $filePath): HTMLDocument
     {
         $dom = new HTMLDocument();
         $dom->loadHTMLFile($filePath);
@@ -111,7 +108,7 @@ class HTMLDocument extends DOMDocument
 
     public function saveHTMLFile($filename): int|false
     {
-        if (!is_writable($filename)) {
+        if (! is_writable($filename)) {
             return false;
         }
         $result = $this->saveHTML();
@@ -135,7 +132,7 @@ class HTMLDocument extends DOMDocument
 
         // DOMDocument doesn't like treating an empty string as valid HTML,
         // so we'll skip this step if it's empty.
-        if (!empty(trim($source))) {
+        if (! empty(trim($source))) {
             // Uses the @ operator to suppress errors with DOMDocument, as it may
             // throw an error if invalid HTML is found, but continue to load
             // the resulting document as expected, working around them.

@@ -2,9 +2,9 @@
 
 namespace Future\HTMLDocument\Tests\HTMLDocument\Middleware;
 
-use PHPUnit\Framework\TestCase;
-use Future\HTMLDocument\HTMLElement;
 use Future\HTMLDocument\HTMLDocument;
+use Future\HTMLDocument\HTMLElement;
+use PHPUnit\Framework\TestCase;
 
 class HasCssQuerySelectorsTest extends TestCase
 {

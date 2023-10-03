@@ -7,6 +7,7 @@ use Future\HTMLDocument\HTMLNodeList;
 trait CanManipulateDocument
 {
     abstract public function querySelectorAll(string $cssSelector): HTMLNodeList;
+
     abstract public function query(string $xpathSelector): HTMLNodeList;
 
     public function withoutSelector(string $cssSelector): static
@@ -14,7 +15,7 @@ trait CanManipulateDocument
         $nodes = $this->querySelectorAll($cssSelector);
 
         foreach ($nodes as $node) {
-            if (!empty($node->parentNode)) {
+            if (! empty($node->parentNode)) {
                 $node->parentNode->removeChild($node);
             }
         }
@@ -27,7 +28,7 @@ trait CanManipulateDocument
         $comments = $this->query('//comment()');
 
         foreach ($comments as $comment) {
-            if (!empty($comment->parentNode)) {
+            if (! empty($comment->parentNode)) {
                 $comment->parentNode->removeChild($comment);
             }
         }

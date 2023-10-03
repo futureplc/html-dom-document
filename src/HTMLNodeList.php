@@ -2,15 +2,14 @@
 
 namespace Future\HTMLDocument;
 
-use DOMNode;
-use Countable;
 use ArrayAccess;
-use DOMNodeList;
-use Traversable;
 use ArrayIterator;
+use Countable;
 use DOMException;
+use DOMNode;
+use DOMNodeList;
 use IteratorAggregate;
-use Future\HTMLDocument\HTMLElement;
+use Traversable;
 
 /** @template-implements ArrayAccess<int, HTMLElement> */
 class HTMLNodeList extends DOMNodeList implements IteratorAggregate, ArrayAccess, Countable, Traversable
@@ -44,7 +43,7 @@ class HTMLNodeList extends DOMNodeList implements IteratorAggregate, ArrayAccess
             try {
                 $newNode = $dom->createElement($node->nodeName, $node->nodeValue);
 
-                if (!empty($node->parentNode)) {
+                if (! empty($node->parentNode)) {
                     $node->parentNode->replaceChild($newNode, $node);
                 }
 
@@ -98,7 +97,7 @@ class HTMLNodeList extends DOMNodeList implements IteratorAggregate, ArrayAccess
 
     public function offsetGet($offset): ?HTMLElement
     {
-        if (!isset($this->elements[$offset])) {
+        if (! isset($this->elements[$offset])) {
             return null;
         }
 

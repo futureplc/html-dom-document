@@ -17,6 +17,7 @@ class WrapDefaultHTML extends AbstractMiddleware
     {
         if (Utility::countRootNodes($source) > 1) {
             $this->hasMultipleRootNodes = true;
+
             return "<{$this->wrappingTag}>" . $source . "</{$this->wrappingTag}>";
         }
 

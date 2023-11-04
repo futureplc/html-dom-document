@@ -78,4 +78,19 @@ class Utility
 
         return $fragment->childNodes->length;
     }
+
+    public static function nodeContainsNode(DOMNode $parentNode, DOMNode $childNode)
+    {
+        if ($parentNode === $childNode) {
+            return true;
+        }
+
+        foreach ($parentNode->childNodes as $child) {
+            if ($child === $childNode || Utility::nodeContainsNode($child, $childNode)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

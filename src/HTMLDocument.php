@@ -7,6 +7,7 @@ use DOMDocument;
 use DOMElement;
 use DOMNode;
 use DOMText;
+use Future\HTMLDocument\Concerns\CanCompareDocument;
 use Future\HTMLDocument\Concerns\CanManipulateDocument;
 use Future\HTMLDocument\Concerns\HasCssQuerySelectors;
 use Future\HTMLDocument\Concerns\HasXPathQuerySelectors;
@@ -34,6 +35,7 @@ class HTMLDocument extends DOMDocument
     use HasCssQuerySelectors;
     use HasXPathQuerySelectors;
     use CanManipulateDocument;
+    use CanCompareDocument;
 
     /** @var AbstractMiddleware[] */
     private array $middleware = [];

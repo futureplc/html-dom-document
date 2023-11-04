@@ -5,6 +5,7 @@ namespace Future\HTMLDocument;
 use DOMAttr;
 use DOMElement;
 use DOMNode;
+use Future\HTMLDocument\Concerns\CanCompareDocument;
 use Future\HTMLDocument\Concerns\CanManipulateDocument;
 use Future\HTMLDocument\Concerns\HasCssQuerySelectors;
 use Future\HTMLDocument\Concerns\HasXPathQuerySelectors;
@@ -24,6 +25,7 @@ class HTMLElement extends DOMElement
     use HasCssQuerySelectors;
     use HasXPathQuerySelectors;
     use CanManipulateDocument;
+    use CanCompareDocument;
 
     public static function fromNode(DOMNode $node): HTMLElement
     {

@@ -93,5 +93,4 @@ class Utility
 
         return false;
     }
-    
 }

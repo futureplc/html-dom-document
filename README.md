@@ -1,19 +1,22 @@
-# A drop-in replacement for DOMDocument that handles HTML5 documents.
+# A drop-in replacement for DOMDocument that handles HTML5 documents gracefully
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/futureplc/html-dom-document.svg?style=flat-square)](https://packagist.org/packages/futureplc/html-dom-document)
 [![Tests](https://img.shields.io/github/actions/workflow/status/futureplc/html-dom-document/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/futureplc/html-dom-document/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/futureplc/html-dom-document.svg?style=flat-square)](https://packagist.org/packages/futureplc/html-dom-document)
 
-The HTMLDocument package has one main purpose; to act as a stand-in replacement for the `DOMDocument` and related DOM classes that come with PHP's core libxml extension.
+The HTMLDocument package has one primary purpose: to act as a stand-in replacement for the `DOMDocument` and related DOM classes that come with PHP's core libxml extension.
 
-While the DOM classes that come with PHP are a great way to parse XML, they quickly fall apart when trying to parse HTML. The main problems are:
+> [!] There are other, recommended ways if you're writing new code to parse HTML content and don't need a drop-in replacement for `DOMDocument`, such as for a legacy application.
+> Instead, onsider using a package like the [Symfony DOM Crawler component].
+
+While the DOM-related classes with PHP are a great way to parse XML, they quickly fall apart when trying to parse HTML. The main problems are:
 
 - libxml, and `DOMDocument` as a result, are not well-suited to parsing HTML5, as HTML5 is not necessarily valid XML. It can work with HTML5 just fine, but it needs a bit of finessing to get it working correctly
-- The interface are not very intuitive, often requiring 5+ lines of code to perform simple operations like making an instance of a `DOMElement`
-- The interface is inundated with legacy techniques, such as falsey return values on failures instead of sensible defaults, which makes it difficult to use alongside static analysis tools
-- There are a lot of features missing that people working with HTML often use nowadays, such as querying with CSS selectors, manipulating attributes and equivalents of some JavaScript functions to get common things like `innerHTML` and `outerHTML`
+- The interfaces are not very intuitive, often requiring 5+ lines of code to perform simple operations like making an instance of a `DOMElement`
+- The interface is inundated with legacy techniques, such as falsey return values on failures instead of sensible defaults, which makes it challenging to use alongside static analysis tools
+- There are a lot of features missing that people working with HTML often use nowadays, such as querying with CSS selectors, manipulating attributes and equivalents of some JavaScript functions to get commonly needed things like `innerHTML` and `outerHTML`
 
-This package provides a series of classes to replace the DOM ones in a backwards-compatible fashion, but with a tighter interface and additional utilities bundled in to make working with HTML a breeze. All of these classes will return instances of the equivalent `HTML*` class instead of the `DOM*` one if available.
+This package provides a series of classes to replace the DOM ones in a backward-compatible fashion but with a tighter interface and additional utilities bundled in to make working with HTML a breeze. These classes will return instances of the equivalent `HTML*` class instead of the `DOM*` one:
 
 - `DOMDocument` -> `HTMLDocument`
 - `DOMElement` -> `HTMLElement`
@@ -24,7 +27,7 @@ This package provides a series of classes to replace the DOM ones in a backwards
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via Composer:
 
 ```bash
 composer require futureplc/html-dom-document
@@ -35,17 +38,18 @@ composer require futureplc/html-dom-document
 ### Sensible return values
 
 There's nothing more annoying than having to check union types on every operation because of PHP's legacy of using falsey return types. We've sorted this by making sure there are sensible defaults:
-- If a return value expects `DOMNodeList` or `false`, we'll just return an empty `DOMNodeList` if there are no values to return
--  If a return value could be a `string` or `false`, we'll either throw an exception on failure or return an empty string
-- No more differentiating between `DOMNode` and `DOMElement`, we have a single `HTMLElement` class that handles all scenarios of the two combined
 
-You'll notice this philosophy a lot throughout the interface - if there's a sensible type to return, we'll make sure you get that instead of dealing with unions.
+- If a return value expects `DOMNodeList` or `false`, we'll return an empty `DOMNodeList` if there are no values to return
+-  If a return value could be a `string` or `false`, we'll either throw an exception on failure or return an empty string
+- No more differentiating between `DOMNode` and `DOMElement`; we have a single `HTMLElement` class that handles all scenarios of the two combined
+
+You'll notice this philosophy throughout the interface - if there's a sensible type to return, we'll ensure you get that instead of dealing with unions.
 
 ### Easily create HTML documents and elements
 
-`DOMDocument` typically has a terse, antiquated interface that requires a lot of setup and repetition to do even basic and common tasks like creating an `DOMElement` class from a plain HTML string.
+`DOMDocument` typically has a terse, antiquated interface that requires a lot of setup and repetition to do even basic and commonly needed tasks like creating a `DOMElement` class from a plain HTML string.
 
-All the old `DOMDocument` style methods still work, so you can drop this package in as a replacement for existing `DOMDocument` implementations, though we have added a handful of new ways to create HTML documents and elements without needing the verbosity usually required for some of the operations.
+All the old `DOMDocument` style methods still work, so you can drop this package in as a replacement for existing `DOMDocument` implementations. However, we have added new ways to create HTML documents and elements without the verbosity usually required for some operations.
 
 ```php
 $dom = new HTMLDocument(); $dom->loadHTML($html);
@@ -67,17 +71,10 @@ The majority of the custom behaviour to allow DOMDocument to parse any HTML stri
 These middleware do various things, such as:
 - Assuming HTML5 behaviour if no `<!doctype>` is present, by adding one
 - Ignoring LibXML errors (as LibXML complains about certain HTML5 tags even though it can parse them properly)
-- Treating of `<template>` and `<script>` tags as verbatim, so their contents aren't changed by the rest of the document
+- Treating `<template>` and `<script>` tags as verbatim so their contents aren't changed by the rest of the document
 
 These will be enabled by default if you use the `HTMLDocument` class, but you can disable them if you like by calling the `withoutMiddleware()` method before loading the HTML.
-
-```php
-$dom = new HTMLDocument();
-$dom->withoutMiddleware();
-$dom->loadHTML($html);
-```
-
-### Easily get HTML string back
+Easily get the HTML string back
 
 Getting a plain HTML string back out of `DOMDocument` can be a bit tricky if you need something specific like a specific element, so we have added some options to make it easier.
 
@@ -99,7 +96,7 @@ If you need to know whether you're working with an HTML5 document or not, the `i
 $dom->isHtml5(); // true
 ```
 
-If working with HTML5, you may want to know if a given node is a "void element", meaning it needs no closing tag. This can be checked with the `isVoidElement()` method.
+If working with HTML5, you may want to know if a given node is a "void element," meaning it needs no closing tag. This can be checked with the `isVoidElement()` method.
 
 ```php
 $element->isVoidElement(); // true
@@ -109,7 +106,7 @@ $element->isVoidElement(); // true
 
 There are a couple of additional utility methods to help build attribute strings from PHP arrays.
 
-`Utility::attribute()` will take a single key/value pair and turn it into an HTML attribute, regardless of whether the value is a string, array or a boolean.
+`Utility::attribute()` will take a single key/value pair and turn it into an HTML attribute, regardless of whether the value is a string, array, or boolean.
 
 ```php
 Utility::attribute('class', ['foo', 'bar']); // class="foo bar"
@@ -117,7 +114,7 @@ Utility::attribute('id', 'baz'); // id="baz"
 Utility::attribute('required', true); // disabled
 ```
 
-`Utility::attributes()` will take this a step further by doing the same with an array of key/value pairs, turning them into an HTML attribute string all together.
+`Utility::attributes()` will take this further by doing the same with an array of key/value pairs, turning them into an HTML attribute string altogether.
 
 ```php
 Utility::attributes([
@@ -146,7 +143,7 @@ $dom->mapRecursive(function ($node) {
 
 ### Working with CSS classes
 
-The `HTMLElement` class has a handful of methods to help you work with CSS classes.
+The `HTMLElement` class has several methods to help you work with CSS classes.
 
 ```php
 $element->setClassList(['foo', 'bar']);
@@ -167,8 +164,7 @@ $element->toggleAttribute('checked'); // <input type="checkbox">
 ```
 
 ### Querying on CSS selectors and XPath
-
-Let's be honest, most people working with HTML know how to use most CSS selectors, but a lot of people have never touched XPath. We've added handy `querySelector()`  and `querySelectorAll()` methods to the `HTMLDocument` and `HTMLElement` classes, allowing you to use CSS selectors directly to get the elements you need, courtesy of the [Symfony CSS Selector](https://github.com/symfony/css-selector) package.
+Most people working with HTML know how to use most CSS selectors, but many have never touched XPath. We've added handy `querySelector()`  and `querySelectorAll()` methods to the `HTMLDocument` and `HTMLElement` classes, allowing you to use CSS selectors directly to get the needed elements, courtesy of the [Symfony CSS Selector](https://github.com/symfony/css-selector) package.
 
 ```php
 $dom->querySelector('head > title'); // Returns the first `<title>` element
@@ -183,9 +179,9 @@ $dom->query('//a'); // Returns all `<a>` elements
 
 ### Working with text nodes
 
-Working with text nodes can be a bit tricky if you ever want to change something in the text to another node entirely. The `replaceTextWithNode()` method on `HTMLText` lets you do just that.
+Working with text nodes can be tricky if you ever want to change something in the text to another node entirely. The `replaceTextWithNode()` method on `HTMLText` lets you do just that.
 
-This is particularly useful if you use the `Utility::nodeMapRecursive()` function, as that will also traverse through text nodes.
+This is particularly useful if you use the `Utility::nodeMapRecursive()` function, which will traverse through text nodes.
 
 ```php
 $textNode->replaceTextWithNode('example', HTMLElement::fromHTML('<strong>example</strong>'));
@@ -193,7 +189,7 @@ $textNode->replaceTextWithNode('example', HTMLElement::fromHTML('<strong>example
 
 ## Drawbacks
 
-Because of all the extra checks and type conversions that happen, this package is a bit slower than the native `DOMDocument` classes. However, the difference is negligible in most cases, and the benefits of the additional features and ease of use far outweigh the performance hit unless you are processing millions of large HTML documents at once.
+Because of all the extra checks and type conversions, this package is a bit slower than the native `DOMDocument` classes. However, the difference is negligible in most cases, and the benefits of the additional features and ease of use far outweigh the performance hit unless you are processing millions of large HTML documents at once.
 
 ## Testing
 

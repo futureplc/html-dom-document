@@ -2,11 +2,13 @@
 
 namespace Future\HTMLDocument;
 
-use DOMDocument;
 use DOMNode;
+use Future\HTMLDocument\Middleware\WrapDefaultHTML;
 
 class Utility
 {
+    public const WRAPPING_TAG = 'wrap-for-multiple-root-nodes';
+
     /** Turn an array into a string of HTML attributes. */
     public static function attributes(array $attributes): string
     {
@@ -72,10 +74,30 @@ class Utility
      */
     public static function countRootNodes(string $html): int
     {
-        $dom = new DOMDocument();
-        $fragment = $dom->createDocumentFragment();
-        $fragment->appendXML($html);
+        return HTMLNodeList::fromString(
+            $html,
+            (new HTMLDocument())->withoutMiddleware(WrapDefaultHTML::class),
+        )->count();
+    }
 
-        return $fragment->childNodes->length;
+    public static function wrap(string $html): string
+    {
+        $tag = Utility::WRAPPING_TAG;
+
+        return "<{$tag}>{$html}</{$tag}>";
+    }
+
+    public static function unwrap(string $html): string
+    {
+        $html = trim($html);
+        $tag = Utility::WRAPPING_TAG;
+        $startingTag = "<{$tag}>";
+        $endingTag = "</{$tag}>";
+
+        if (! str_starts_with($html, $startingTag) || ! str_ends_with($html, $endingTag)) {
+            return $html;
+        }
+
+        return substr($html, strlen($startingTag), -strlen($endingTag));
     }
 }

@@ -10,7 +10,6 @@ use Future\HTMLDocument\Utility;
  */
 class WrapDefaultHTML extends AbstractMiddleware
 {
-    protected string $wrappingTag = 'wrap-for-multiple-root-nodes';
     protected bool $hasMultipleRootNodes = false;
 
     public function beforeLoadHTML(string $source): string
@@ -18,7 +17,7 @@ class WrapDefaultHTML extends AbstractMiddleware
         if (Utility::countRootNodes($source) > 1) {
             $this->hasMultipleRootNodes = true;
 
-            return "<{$this->wrappingTag}>" . $source . "</{$this->wrappingTag}>";
+            return Utility::wrap($source);
         }
 
         return $source;
@@ -27,7 +26,7 @@ class WrapDefaultHTML extends AbstractMiddleware
     public function afterSaveHTML(string $source): string
     {
         if ($this->hasMultipleRootNodes) {
-            return str_replace("<{$this->wrappingTag}>", '', str_replace("</{$this->wrappingTag}>", '', $source));
+            return Utility::unwrap($source);
         }
 
         return $source;

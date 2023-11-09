@@ -58,4 +58,10 @@ class UtilityTest extends TestCase
         $this->assertEquals(3, Utility::countRootNodes('<div></div><div></div><div></div>'));
         $this->assertEquals(3, Utility::countRootNodes('Foo<div>Bar</div>Baz'));
     }
+
+    /** @test */
+    public function can_count_root_nodes_from_html5_void_elements()
+    {
+        $this->assertEquals(2, Utility::countRootNodes('<input><button></button>'));
+    }
 }

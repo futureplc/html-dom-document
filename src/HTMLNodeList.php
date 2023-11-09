@@ -33,9 +33,8 @@ class HTMLNodeList extends DOMNodeList implements IteratorAggregate, ArrayAccess
         $this->elements = $elements;
     }
 
-    public static function fromDOMNodeList(DOMNodeList $list, HTMLDocument $dom = null): HTMLNodeList
+    public static function fromDOMNodeList(DOMNodeList $list, HTMLDocument $dom = new HTMLDocument()): HTMLNodeList
     {
-        $dom ??= new HTMLDocument();
         $nodes = [];
 
         /** @var DOMNode[] $list */
@@ -57,6 +56,16 @@ class HTMLNodeList extends DOMNodeList implements IteratorAggregate, ArrayAccess
         }
 
         return new HTMLNodeList($nodes);
+    }
+
+    public static function fromString(string $html, HTMLDocument $dom = new HTMLDocument()): HTMLNodeList
+    {
+        $dom->loadHTML(Utility::wrap($html));
+
+        return HTMLNodeList::fromDOMNodeList(
+            $dom->getElementsByTagName(Utility::WRAPPING_TAG)->item(0)->childNodes,
+            clone $dom,
+        );
     }
 
     public function count(): int

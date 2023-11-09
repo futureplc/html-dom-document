@@ -78,9 +78,19 @@ class HTMLDocument extends DOMDocument
         return $this;
     }
 
-    public function withoutMiddleware(): HTMLDocument
+    /** @param ?class-string $middleware */
+    public function withoutMiddleware(?string $middlewareToRemove = null): HTMLDocument
     {
-        $this->middleware = [];
+        if ($middlewareToRemove === null) {
+            $this->middleware = [];
+
+            return $this;
+        }
+
+        $this->middleware = array_filter(
+            $this->middleware,
+            fn (AbstractMiddleware $middleware) => ! $middleware instanceof $middlewareToRemove,
+        );
 
         return $this;
     }

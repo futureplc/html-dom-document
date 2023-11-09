@@ -2,9 +2,7 @@
 
 namespace Future\HTMLDocument\Tests\HTMLDocument;
 
-use Future\HTMLDocument\HTMLElement;
 use Future\HTMLDocument\HTMLNodeList;
-use Future\HTMLDocument\HTMLText;
 use PHPUnit\Framework\TestCase;
 
 class HTMLNodeListTest extends TestCase

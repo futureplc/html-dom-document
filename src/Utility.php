@@ -2,7 +2,6 @@
 
 namespace Future\HTMLDocument;
 
-use DOMDocument;
 use DOMNode;
 use Future\HTMLDocument\Middleware\WrapDefaultHTML;
 
@@ -95,7 +94,7 @@ class Utility
         $startingTag = "<{$tag}>";
         $endingTag = "</{$tag}>";
 
-        if (!str_starts_with($html, $startingTag) || !str_ends_with($html, $endingTag)) {
+        if (! str_starts_with($html, $startingTag) || ! str_ends_with($html, $endingTag)) {
             return $html;
         }
 

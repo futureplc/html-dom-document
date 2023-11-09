@@ -89,7 +89,7 @@ class HTMLDocument extends DOMDocument
 
         $this->middleware = array_filter(
             $this->middleware,
-            fn (AbstractMiddleware $middleware) => !$middleware instanceof $middlewareToRemove,
+            fn (AbstractMiddleware $middleware) => ! $middleware instanceof $middlewareToRemove,
         );
 
         return $this;
